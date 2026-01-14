@@ -47,3 +47,29 @@ outputs:
       files:
         - from_output: gerbers
         - from_output: drill
+
+  - name: step
+    comment: STEP 3D model
+    type: step
+    dir: 3d
+    options:
+      metric_units: true
+      origin: grid
+
+  - name: render_top
+    comment: Top side board render
+    type: pcbdraw
+    dir: renders
+    options:
+      format: png
+      dpi: 300
+      bottom: false
+
+  - name: render_bottom
+    comment: Bottom side board render
+    type: pcbdraw
+    dir: renders
+    options:
+      format: png
+      dpi: 300
+      bottom: true

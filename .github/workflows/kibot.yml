@@ -35,3 +35,15 @@ jobs:
         with:
           name: drill
           path: output/drill/
+
+      - name: Upload STEP
+        uses: actions/upload-artifact@v4
+        with:
+          name: step
+          path: output/3d/
+
+      - name: Upload Renders
+        uses: actions/upload-artifact@v4
+        with:
+          name: renders
+          path: output/renders/
