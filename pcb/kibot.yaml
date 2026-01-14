@@ -99,3 +99,14 @@ outputs:
       units: millimeters
       separate_files_for_front_and_back: true
       only_smd: true
+      columns:
+        - id: Ref
+          name: Designator
+        - id: PosX
+          name: "Mid X"
+        - id: PosY
+          name: "Mid Y"
+        - id: Side
+          name: Layer
+        - id: Rot
+          name: Rotation
