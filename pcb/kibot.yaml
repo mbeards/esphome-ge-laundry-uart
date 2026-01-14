@@ -73,3 +73,29 @@ outputs:
       format: png
       dpi: 300
       bottom: true
+
+  - name: bom
+    comment: Bill of Materials
+    type: bom
+    dir: assembly
+    options:
+      format: CSV
+      columns:
+        - Row
+        - References
+        - Value
+        - Footprint
+        - Quantity Per PCB
+      group_fields:
+        - Value
+        - Footprint
+
+  - name: position
+    comment: Pick and place position file
+    type: position
+    dir: assembly
+    options:
+      format: CSV
+      units: millimeters
+      separate_files_for_front_and_back: true
+      only_smd: true
