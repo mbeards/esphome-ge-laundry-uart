@@ -106,6 +106,7 @@ outputs:
         - Value
         - Footprint
         - Quantity Per PCB
+        - Description
       group_fields:
         - Value
         - Footprint
