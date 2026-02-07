@@ -1,0 +1,132 @@
+kibot:
+  version: 1
+
+filters:
+  - name: only_jlc_parts
+    comment: 'Only parts with JLC code'
+    type: generic
+    include_only:
+      - column: 'LCSC#'
+        regex: '^C\d+'
+
+outputs:
+  - name: 'interactive_bom (default)'
+    comment: "Interactive Bill of Materials (HTML)"
+    type: ibom
+    options:
+      name_format: '%f_iBoM'
+        
+  - name: 'schematic (full)'
+    comment: "Print schematic (PDF)"
+    type: pdf_sch_print
+    dir: .
+    options:
+      output: Schematic.pdf
+  - name: gerbers
+    comment: Gerber files for PCB fabrication
+    type: gerber
+    dir: gerbers
+    options:
+      exclude_edge_layer: true
+      exclude_pads_from_silkscreen: false
+      use_aux_axis_as_origin: false
+      plot_sheet_reference: false
+      plot_footprint_refs: true
+      plot_footprint_values: true
+      force_plot_invisible_refs_vals: false
+      tent_vias: true
+      create_gerber_job_file: true
+    layers:
+      - F.Cu
+      - B.Cu
+      - F.Paste
+      - B.Paste
+      - F.Silkscreen
+      - B.Silkscreen
+      - F.Mask
+      - B.Mask
+      - Edge.Cuts
+
+  - name: drill
+    comment: Drill files for PCB fabrication
+    type: excellon
+    dir: drill
+    options:
+      metric_units: true
+      pth_and_npth_single_file: false
+      use_aux_axis_as_origin: false
+      minimal_header: false
+      mirror_y_axis: false
+      zeros_format: DECIMAL_FORMAT
+
+  - name: gerber_zip
+    comment: Gerber ZIP for fabrication
+    type: compress
+    dir: gerbers
+    options:
+      files:
+        - from_output: gerbers
+        - from_output: drill
+
+  - name: step
+    comment: STEP 3D model
+    type: step
+    dir: 3d
+    options:
+      metric_units: true
+      origin: grid
+
+  - name: render_top
+    comment: Top side board render
+    type: pcbdraw
+    dir: renders
+    options:
+      format: png
+      dpi: 300
+      bottom: false
+
+  - name: render_bottom
+    comment: Bottom side board render
+    type: pcbdraw
+    dir: renders
+    options:
+      format: png
+      dpi: 300
+      bottom: true
+
+  - name: bom
+    comment: Bill of Materials
+    type: bom
+    dir: assembly
+    options:
+      format: CSV
+      columns:
+        - Row
+        - References
+        - Value
+        - Footprint
+        - Quantity Per PCB
+        - Description
+      group_fields:
+        - Value
+        - Footprint
+
+  - name: position
+    comment: Pick and place position file
+    type: position
+    dir: assembly
+    options:
+      format: CSV
+      units: millimeters
+      separate_files_for_front_and_back: true
+      columns:
+        - id: Ref
+          name: Designator
+        - id: PosX
+          name: "Mid X"
+        - id: PosY
+          name: "Mid Y"
+        - id: Side
+          name: Layer
+        - id: Rot
+          name: Rotation
